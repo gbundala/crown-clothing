@@ -5,7 +5,7 @@ import ShopPage from './pages/shop/shop';
 import { Switch, Route } from 'react-router-dom';
 import Header from './components/header/header';
 import SignIn from './pages/sign-in/sign-in';
-import { auth } from './firebase/firebase.utils';
+import { auth, createUserProfileDocument } from './firebase/firebase.utils';
 
 class App extends Component {
 	constructor() {
@@ -19,10 +19,24 @@ class App extends Component {
 	unsubscribeFromAuth = null
 
 	componentDidMount() {
-		this.unsubscribeFromAuth = auth.onAuthStateChanged(user => {
-			this.setState({ currentUser: user });
+		this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
+			if (userAuth) {
+				const userRef = await createUserProfileDocument(userAuth);
 
-			console.log(user);
+				userRef.onSnapshot(snapShot => {
+					this.setState({
+						currentUser: {
+							id: snapShot.id,
+							...snapShot.data()
+						}
+					});
+
+					console.log(this.state); 
+				})
+
+			} 
+			// (consider whether we need the else) we have wrapped it in an else statement so that this.setState does not fire twice
+			this.setState({ currentUser: userAuth });
 		});
 	}
 
