@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import HomePage from './pages/homepage/homepage';
 import ShopPage from './pages/shop/shop';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import Header from './components/header/header';
 import SignIn from './pages/sign-in/sign-in';
 import { auth, createUserProfileDocument } from './firebase/firebase.utils';
@@ -41,27 +41,36 @@ class App extends Component {
 	componentWillUnmount() {
 		this.unsubscribeFromAuth();
 	}
-
+	// Render is a JS invocation that determines what we want to display or return
 	render() {
 		// App no longer has to pass state through the header tag in here. Our header is no longer dependent on App passing it in but App still updates our user reducer value and our header is still able to get our currentUser property
+		// in the Routes below; the SignIn is the SignInAndSignOut page, go to change it
 		return (
 		    <div>
 			    <Header />
 			    <Switch>
 			        <Route exact path='/' component={HomePage} />
 			        <Route path='/shop' component={ShopPage} />
-			        <Route path='/signin' component={SignIn} />
+			        <Route exact path='/signin' render={() => this.props.currentUser ? (
+			        	<Redirect to='/' />) : (
+			        	<SignIn />)} 
+			        />
 			    </Switch>
 		    </div>
 		);
 	}
 }
+//We going to need our currentUser from our redux state. Hence just as we did in our Header. This is in order to redirect from the SignInAndSignUp page after loggin in
+const mapStateToProps = ({ user }) => ({
+	currentUser: user.currentUser
+})
+
 
 //is a redux function that gets dispatch property 
 const mapDispatchToProps = dispatch => ({
 	setCurrentUser: user => dispatch(setCurrentUser(user))
 });
 
-//weve set our first argument to null as we dont need any state or props from our reducer
-export default connect(null, mapDispatchToProps) (App);
+//we also pass our mapStateToProps as the first argument from above method
+export default connect(mapStateToProps, mapDispatchToProps) (App);
  
