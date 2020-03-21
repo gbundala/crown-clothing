@@ -7,6 +7,10 @@ import { connect } from 'react-redux';
 import CartIcon from '../cart-icon/cart-icon';
 import CartDropdown from '../cart-dropdown/cart-dropdown';
 
+import { createStructuredSelector } from 'reselect';
+import { selectCurrentUser } from '../../redux/user/user.selectors';
+import { selectCartHidden } from '../../redux/cart/cart.selectors';
+
 const Header = ({ currentUser, hidden }) => (
 	<div className='header'>
 		<Link className='logo-container' to="/">
@@ -35,9 +39,9 @@ const Header = ({ currentUser, hidden }) => (
 )
 
 // We have destructed nested value of our state by replacing state with user: { current...}
-const mapStateToProps = ({user: { currentUser }, cart: { hidden } }) => ({
-	currentUser, 
-	hidden
+const mapStateToProps = createStructuredSelector({
+	currentUser: selectCurrentUser, 
+	hidden: selectCartHidden
 });
 
 export default connect(mapStateToProps)(Header);

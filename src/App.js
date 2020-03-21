@@ -9,6 +9,9 @@ import { auth, createUserProfileDocument } from './firebase/firebase.utils';
 import { connect } from 'react-redux';
 import { setCurrentUser } from './redux/user/user.actions';
 
+import { createStructuredSelector } from 'reselect';
+import { selectCurrentUser } from './redux/user/user.selectors';
+
 class App extends Component {
 	// We don't need this constructor anymore. We already passed the mapDispatchToProps method to App.js below
 
@@ -61,9 +64,9 @@ class App extends Component {
 	}
 }
 //We going to need our currentUser from our redux state. Hence just as we did in our Header. This is in order to redirect from the SignInAndSignUp page after loggin in
-const mapStateToProps = ({ user }) => ({
-	currentUser: user.currentUser
-})
+const mapStateToProps = createStructuredSelector({
+	currentUser: selectCurrentUser
+});
 
 
 //is a redux function that gets dispatch property 
