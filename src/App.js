@@ -43,6 +43,7 @@ class App extends Component {
 			//Instead of using this.props.setCurrentUser, we have just said setCurrentUser because we have already distructured it above
 			//We don't need to pass an object with currentuser, we just need what the object we want to update with (I guess the value , right -- which is userAuth in this case as below)
 			setCurrentUser(userAuth);
+			// addCollectionAndDocuments('collections', collectionsArray.map(({ title, items }) => ({ title, items }) ));
 		});
 	}
 
@@ -71,7 +72,7 @@ class App extends Component {
 }
 //We going to need our currentUser from our redux state. Hence just as we did in our Header. This is in order to redirect from the SignInAndSignUp page after loggin in
 const mapStateToProps = createStructuredSelector({
-	currentUser: selectCurrentUser
+	currentUser: selectCurrentUser,
 });
 
 

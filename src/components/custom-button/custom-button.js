@@ -1,16 +1,12 @@
 import React from 'react';
-import './custom-button.scss';
+// import './custom-button.scss';
+import { CustomButtonContainer } from './custom-button.styles';
 
-const CustomButton = ({ children, isGoogleSignIn, inverted, ...otherProps }) => (
+const CustomButton = ({ children, ...props }) => (
 	// we have conditionally rendered using string interpolation the className of google signin other wise... (the ternary now!)
-	<button 
-		className={`${inverted ? 'inverted' : ''} ${
-			isGoogleSignIn ? 'google-sign-in' : ''
-		} custom-button`} 
-		{...otherProps}
-	>
+	<CustomButtonContainer {...props} >
 		{children}
-	</button>
+	</CustomButtonContainer>
 );
 
 export default CustomButton;

@@ -1,6 +1,6 @@
 import React from 'react';
-import './header.scss';
-import { Link } from 'react-router-dom';
+// import './header.scss';
+// import { Link } from 'react-router-dom';
 import { ReactComponent as Logo } from '../../assets/crown.svg';
 import { auth } from '../../firebase/firebase.utils';
 import { connect } from 'react-redux';
@@ -11,31 +11,33 @@ import { createStructuredSelector } from 'reselect';
 import { selectCurrentUser } from '../../redux/user/user.selectors';
 import { selectCartHidden } from '../../redux/cart/cart.selectors';
 
+import { HeaderContainer, LogoContainer, OptionContainer, OptionLink, OptionDiv } from './header.styles';
+
 const Header = ({ currentUser, hidden }) => (
-	<div className='header'>
-		<Link className='logo-container' to="/">
+	<HeaderContainer>
+		<LogoContainer to="/">
 			<Logo className='logo' />
-		</Link>
-		<div className='options'>
-			<Link className='option' to='/shop'>
+		</LogoContainer>
+		<OptionContainer>
+			<OptionLink to='/shop'>
 				SHOP
-			</Link>
-			<Link className='option' to='/contact'>
+			</OptionLink>
+			<OptionLink to='/contact'>
 				CONTACT
-			</Link>
+			</OptionLink>
 			{
 				currentUser ? 
 				// the signOut() call function is provided by the firebase auth library! Awesome huh!
-				<div className='option' onClick={() => auth.signOut()}>SIGN OUT</div>
+				<OptionDiv onClick={() => auth.signOut()}>SIGN OUT</OptionDiv>
 				:
-				<Link className='option' to='/signin'>SIGN IN</Link>
+				<OptionLink to='/signin'>SIGN IN</OptionLink>
 			}
 			<CartIcon />
-		</div>
+		</OptionContainer>
 		{
 			hidden ? null : <CartDropdown />
 		}
-	</div>
+	</HeaderContainer>
 )
 
 // We have destructed nested value of our state by replacing state with user: { current...}
